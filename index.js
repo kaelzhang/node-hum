@@ -52,10 +52,24 @@ Hum.prototype.done = function(done) {
 };
 
 
+Hum.prototype._runTasks = function() {
+    this._run.forEach(function (task) {
+        task = task[0];
+
+        if ( typeof task === 'string' ) {
+            require(task)(grunt);
+
+        } else if ( typeof task === 'function' ) {
+            task(grunt)
+        }
+    });
+};
+
+
 Hum.prototype._applyConfig = function() {
     var config = grunt.config.data;
 
-    grunt.config.data = this._config.reduce(function (prev, current) {
+    grunt.config.data = util.flatten(this._config).reduce(function (prev, current) {
         if ( current === ATOM ) {
             current = config;
         }
@@ -71,10 +85,17 @@ Hum.prototype._loadNpmTasks = function() {
 
 Hum.prototype._loadNpmTask = function(name) {
     this.path.some(function (path) {
+        path = path[0];
+
+        if ( !path ) {
+            return;
+        }
+
         path = node_path.join(path, name, 'tasks');
 
         if ( util.isDir(path) ) {
             grunt.task.loadTasks(path);
+            return true;
         }
     });
 };
