@@ -9,7 +9,18 @@ hum({
     path: node_path.join(__dirname, 'task-path')
 })
 .npmTasks('some-task')
-.task('default', ['some-task'])
+.task('blah')
+.options({
+    // verbose: true
+})
+.config({
+    blah: {
+        test: {
+            a: 1,
+            b: 2
+        }
+    }
+})
 .done(function(){
     console.log('done');
 })

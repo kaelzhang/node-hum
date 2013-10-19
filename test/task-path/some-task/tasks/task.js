@@ -2,10 +2,9 @@
 
 module.exports = function (grunt) {
     grunt.registerMultiTask(
-        'some-task',
+        'blah',
         'test task',
         function () {
-            console.log('');
         }
     );
 };
