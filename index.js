@@ -61,9 +61,26 @@ Hum.prototype._collect_config = function(args) {
 Hum.prototype._apply_config = function() {
     var config = grunt.config.data || {};
 
-    grunt.config.data = this._config.reduce(function (prev, current) {
-        return util.mix(prev, current);
-    }, config);
+    grunt.config.data = this._config
+        .map(this._add_cwd, this)
+        .reduce(function (prev, current) {
+            return util.mix(prev, current);
+        }, config);
+};
+
+
+Hum.prototype._add_cwd = function(config) {
+    var cwd = this.cwd;
+
+    util.each(config, function (task_config) {
+        util.each(task_config, function (target_config) {
+            if ( !target_config.cwd ) {
+                target_config.cwd = cwd;
+            } 
+        });
+    });
+
+    return config;
 };
 
 
@@ -111,7 +128,7 @@ deferrer({
     host: Hum.prototype,
     type: 'parallel'
 })
-.promise('config', '_collect_config')
+.promise('init', '_collect_config')
 .promise('npmTasks', '_load_npm_tasks')
 .promise('task', '_collect_tasks')
 .promise('multiTask', '_register_multi_task')
