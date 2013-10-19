@@ -9,7 +9,7 @@ var hum = require('hum');
 hum({
 	path: '</path/to/search>'
 })
-.run('../Gruntfile.js')  // or .run(require('../gruntfile.js'))
+.run('../Gruntfile.js')
 .npmTasks('grunt-contrib-less')
 .task('haha', ['less'])
 .config({

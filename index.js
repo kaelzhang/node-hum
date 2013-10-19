@@ -5,12 +5,10 @@ hum.Hum = Hum;
 
 var grunt       = require('grunt');
 var util        = require('./lib/util');
-var promiselize = require('./lib/promiselize');
+var deferrer    = require('deferrer');
 
 var node_path = require('path');
 
-
-function NOOP () {};
 
 function hum (options){
     return new Hum(options || {});
@@ -23,70 +21,46 @@ function Hum (options) {
         .concat(
             process.env.NODE_PATH.split(':').filter(Boolean)
         );
+
+    this.cwd = options.cwd || process.cwd();
+
+    this._config = [];
 };
 
 
-var ATOM = {};
+Hum.prototype._run_grunt = function(err, done) {
+    if ( err ) {
+        return done(err);
+    }
 
-promiselize({
-    host: Hum.prototype
-})
-.promise('config')
-.promise('run', true, function () {
-    this._config.push(ATOM);
-})
-.promise('npmTasks')
-.promise('task')
-.promise('multiTasks');
-
-
-Hum.prototype.done = function(done) {
-    this._applyConfig();
-    this._loadNpmTasks();
-    this._registerMultiTasks();
-    this._registerTasks();
+    this._apply_config();
 
     var cli = grunt.cli;
-
     grunt.tasks(cli.tasks, cli.options, done);
 };
 
 
-Hum.prototype._runTasks = function() {
-    this._run.forEach(function (task) {
-        task = task[0];
-
-        if ( typeof task === 'string' ) {
-            require(task)(grunt);
-
-        } else if ( typeof task === 'function' ) {
-            task(grunt)
-        }
-    });
+Hum.prototype._collect_config = function(args) {
+    this._config = this._config.concat(args);
 };
 
 
-Hum.prototype._applyConfig = function() {
-    var config = grunt.config.data;
+Hum.prototype._apply_config = function() {
+    var config = grunt.config.data || {};
 
-    grunt.config.data = util.flatten(this._config).reduce(function (prev, current) {
-        if ( current === ATOM ) {
-            current = config;
-        }
-
+    grunt.config.data = this._config.reduce(function (prev, current) {
         return util.mix(prev, current);
-    }, {});
+    }, config);
 };
 
 
-Hum.prototype._loadNpmTasks = function() {
-    this._npmTasks.forEach(this._loadNpmTask, this);
+Hum.prototype._load_npm_tasks = function(names) {
+    names.forEach(this._load_npm_task, this);
 };
 
-Hum.prototype._loadNpmTask = function(name) {
+
+Hum.prototype._load_npm_task = function(name) {
     this.path.some(function (path) {
-        path = path[0];
-
         if ( !path ) {
             return;
         }
@@ -101,20 +75,23 @@ Hum.prototype._loadNpmTask = function(name) {
 };
 
 
-Hum.prototype._registerMultiTasks = function() {
-    this._multiTasks.forEach(this._registerMultiTask, this);
-};
-
-Hum.prototype._registerMultiTask = function(args) {
-    grunt.registerMultiTask.apply(null, args);
+Hum.prototype._register_multi_task = function(tasks) {
+    grunt.registerMultiTask.apply(null, tasks);
 };
 
 
-Hum.prototype._registerTasks = function() {
-    this._tasks.forEach(function (args) {
-        grunt.registerTask.apply(null, args);  
-    });
+Hum.prototype._register_tasks = function(args) {
+    grunt.registerTask.apply(null, args);
 };
 
 
+deferrer({
+    host: Hum.prototype,
+    type: 'parallel'
+})
+.promise('config', '_collect_config')
+.promise('npmTasks', '_load_npm_tasks')
+.promise('task', '_register_tasks')
+.promise('multiTask', '_register_multi_task')
+.done('_run_grunt');
 
