@@ -5,6 +5,8 @@ module.exports = function (grunt) {
         'blah',
         'test task',
         function () {
+            var done = this.async();
+            done(null);
         }
     );
 };

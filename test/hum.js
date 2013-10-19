@@ -13,7 +13,7 @@ hum({
 .options({
     // verbose: true
 })
-.config({
+.init({
     blah: {
         test: {
             a: 1,
