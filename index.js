@@ -17,10 +17,13 @@ function hum (options){
 // @param {Object} options
 // - path: {Array.<path>} paths to search the grunt tasks from
 function Hum (options) {
-    this.path = util.makeArray(options.path)
-        .concat(
-            process.env.NODE_PATH.split(':').filter(Boolean)
-        );
+    var NODE_PATH = process.env.NODE_PATH;
+
+    this.path = util.makeArray(options.path);
+
+    if ( NODE_PATH ) {
+        this.path = this.path.concat( NODE_PATH.split(':').filter(Boolean) );
+    }
 
     this.cwd = options.cwd || process.cwd();
 
