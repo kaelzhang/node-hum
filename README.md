@@ -12,7 +12,7 @@ npm install hum --save
 
 Actually, `hum` is an alternative of **Gruntfile.js** and supplies a bunch of promise-style APIs.
 
-With `hum`, you could replace the code inside 'Gruntfile.js' with hum methods, and search available tasks only from your specified paths, as well the `PATH` and `NODE_PATH` do.
+With `hum`, you could replace the code inside 'Gruntfile.js' with hum methods, and search available tasks only from your specified paths, as well as the `PATH` and `NODE_PATH` do.
 
 So, it becomes possible for you to run a same tier of tasks for severial different projects.
 
