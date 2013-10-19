@@ -7,5 +7,5 @@ module.exports = function (grunt) {
         function () {
             console.log('');
         }
-    )
+    );
 };

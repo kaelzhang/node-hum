@@ -54,7 +54,7 @@ Hum.prototype._apply_config = function() {
 };
 
 
-Hum.prototype._load_npm_tasks = function(names) {
+Hum.prototype._load_npm_tasks = function(names) { console.log(this.path);
     names.forEach(this._load_npm_task, this);
 };
 
@@ -67,6 +67,7 @@ Hum.prototype._load_npm_task = function(name) {
 
         path = node_path.join(path, name, 'tasks');
 
+console.log('path', path)
         if ( util.isDir(path) ) {
             grunt.task.loadTasks(path);
             return true;
