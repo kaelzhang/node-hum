@@ -6,6 +6,13 @@ module.exports = function (grunt) {
         'test task',
         function () {
             var done = this.async();
+
+            var options = this.options();
+
+            if ( options.cwd !== 'abc' ) {
+                grunt.fail.fatal('"cwd" should be "abc"')
+            }
+
             done(null);
         }
     );

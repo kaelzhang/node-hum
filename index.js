@@ -77,8 +77,12 @@ Hum.prototype._add_cwd = function(config) {
 
     util.each(config, function (task_config) {
         util.each(task_config, function (target_config) {
-            if ( !target_config.cwd ) {
-                target_config.cwd = cwd;
+            var options = target_config.options || (
+                    target_config.options = {}
+                );
+
+            if ( !options.cwd ) {
+                options.cwd = cwd;
             } 
         });
     });

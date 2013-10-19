@@ -1,6 +1,6 @@
 {
   "name": "hum",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Hum, hum could run global grunt tasks which searched from specified paths.",
   "main": "index.js",
   "scripts": {

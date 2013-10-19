@@ -6,7 +6,8 @@ var hum = require('../');
 var node_path = require('path');
 
 hum({
-    path: node_path.join(__dirname, 'task-path')
+    path: node_path.join(__dirname, 'task-path'),
+    cwd: 'abc'
 })
 .npmTasks('some-task')
 .task('blah')
