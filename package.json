@@ -15,7 +15,8 @@
     "grunt",
     "task",
     "grunt-tasks",
-    "custom"
+    "custom",
+    "program"
   ],
   "author": "kael",
   "license": "MIT",
