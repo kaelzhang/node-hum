@@ -1,6 +1,6 @@
 # hum [![NPM version](https://badge.fury.io/js/hum.png)](http://badge.fury.io/js/hum) [![Build Status](https://travis-ci.org/kaelzhang/node-hum.png?branch=master)](https://travis-ci.org/kaelzhang/node-hum) [![Dependency Status](https://gemnasium.com/kaelzhang/node-hum.png)](https://gemnasium.com/kaelzhang/node-hum)
 
-**hum** could run global [grunt](http://gruntjs.com) tasks which searched from specified paths.
+**hum** could run [grunt](http://gruntjs.com) inside a specified cwd and search tasks from the given paths.
 
 **hum** provides a programmatical way to run [grunt](http://gruntjs.com) tasks.
 
