@@ -64,13 +64,15 @@ Hum.prototype._collect_configs = function(args) {
 
 
 Hum.prototype._apply_configs = function() {
-    var config = grunt.config.data || {};
+    var config = {};
 
-    grunt.config.data = this._config
-        .map(this._process_config, this)
-        .reduce(function (prev, current) {
-            return util.mix(prev, current);
-        }, config);
+    grunt.initConfig(
+        this._config
+            .map(this._process_config, this)
+            .reduce(function (prev, current) {
+                return util.mix(prev, current);
+            }, config)
+    );
 };
 
 
@@ -140,7 +142,9 @@ Hum.prototype._normalize_target_files = function (data) {
     }
 
     // undefined -> []
-    data.files = util.makeArray(data.files).map(this._normalize_file_config, this);
+    if ( data.files ) {
+        data.files = util.makeArray(data.files).map(this._normalize_file_config, this);   
+    }
 };
 
 // resolve {src: [], dest: xxx } 
