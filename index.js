@@ -197,7 +197,7 @@ Hum.prototype._apply_options = function() {
 
 
 Hum.prototype._load_npm_tasks = function(names) {
-    names.forEach(this._load_npm_task, this);
+    util.flatten(names).forEach(this._load_npm_task, this);
 };
 
 
