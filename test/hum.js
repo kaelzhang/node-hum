@@ -15,7 +15,7 @@ describe("hum", function(){
         // 'blah' is inside 'some-task'
         .task('blah')
         .options({
-            
+            stack: true
         })
         .init({
             // with is not a task config
@@ -43,7 +43,8 @@ describe("hum", function(){
                         bb: 3,
                     },
 
-                    src: ['**/*.js']
+                    src: ['**/*.js'],
+                    dest: 'abc'
                 }
             }
         })

@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 
             var cwd = node_path.join(__dirname, '..', '..', '..', 'fixtures');
 
-            var js_files = grunt.file.expand( node_path.join(cwd, '**/*.js') );
+            var js_files = grunt.file.expand( node_path.join(cwd, '**/*.js') ).sort();
 
             expect(options.cwd).to.equal( cwd );
             expect(options.aa).to.equal(2);
@@ -20,7 +20,13 @@ module.exports = function (grunt) {
             expect(options.bb).to.equal(3);
             expect(options.dd).to.equal(10);
             
-            expect(this.files[0].src).to.deep.equal(js_files);
+            expect(
+                this.files.map(function (f) {
+                    return f.src[0]
+
+                }).sort()
+                
+            ).to.deep.equal(js_files);
 
             var done = this.async();
             done();

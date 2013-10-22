@@ -69,13 +69,13 @@ Hum.prototype._collect_configs = function(args) {
 Hum.prototype._apply_configs = function() {
     var config = {};
 
-    grunt.initConfig(
-        this._config
-            .map(this._process_config, this)
-            .reduce(function (prev, current) {
-                return util.mix(prev, current);
-            }, config)
-    );
+    var grunt_config = this._config
+        .map(this._process_config, this)
+        .reduce(function (prev, current) {
+            return util.mix(prev, current);
+        }, config);
+
+    grunt.initConfig(config);
 };
 
 
@@ -128,16 +128,20 @@ Hum.prototype._normalize_target_files = function (data) {
 
     // 3. 
     // {
-    //     files: [ file ]
+    //     files: [ path ]
     // }
 
     // 4.
     // {
-    //     files: [{src: [], dest: ...}]
+    //     files: [ {1} ]
     // }
 
     // all these types will be converted to {4}
 
+    var files = data.files;
+
+    // {1} -> {4}
+    // {src: [], dest: ''} -> {files: {src: [], dest: ''}}
     if ( 'src' in data || 'dest' in data ) {
         // we copy necessary properties of `data` to `data.files`,
         // including other configurations for grunt.file.expandMapping 
@@ -147,10 +151,24 @@ Hum.prototype._normalize_target_files = function (data) {
 
         // remove extra data
         delete data.files.options;
+    
+    // {2} -> {4}
+    } else if ( Object(files) === files && !Array.isArray(files) ) {
+        data.files = Object.keys(files).map(function (dest) {
+            var src = files[dest];
+
+            return {
+                src: util.makeArray(src),
+                dest: dest
+            };
+        });
     }
 
+    // -> {files: [{src: [], dest: ''}]}
     // undefined -> []
     if ( data.files ) {
+
+        // if `data.files` already exists, 
         data.files = util.makeArray(data.files).map(this._normalize_file_config, this);   
     }
 };
@@ -160,19 +178,30 @@ Hum.prototype._normalize_file_config = function(data) {
     // 'abc' -> { src: ['<cwd>/abc'] }
     if ( typeof data === 'string' ) {
         data = {
+            cwd: this.cwd,
             src: [ this._resolve_path(data) ]
         };
         
     } else {
-        if ( 'src' in data ) {
-            data.src = util.makeArray(data.src).map(this._resolve_path, this);
-        }
-
         if ( 'dest' in data ) {
             data.dest = this._resolve_path(data.dest);
         }
 
-        delete data.cwd;
+        // this.cwd: '/User/xxx/'
+        // data.cwd: 'abc'
+        // -> '/User/xxx/abc'
+        if ( 'cwd' in data ) {
+            data.cwd = this._resolve_path(data.cwd);
+
+        // this.cwd: '/User/xxx',
+        // -> '/User/xxx'
+        } else {
+            data.cwd = this.cwd;
+        }
+    }
+
+    if ( !('expand' in data) ) {
+        data.expand = true;
     }
 
     return data;
