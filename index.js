@@ -16,15 +16,18 @@ function hum (options){
 
 // @param {Object} options
 // - path: {Array.<path>} paths to search the grunt tasks from
+// - cwd: {path} the cwd
+// - strict_path: {boolean} 
 function Hum (options) {
-    var NODE_PATH = process.env.NODE_PATH;
-
     this.path = util.makeArray(options.path);
 
-    if ( NODE_PATH ) {
-        this.path = this.path.concat( NODE_PATH.split(':').filter(Boolean) );
+    if ( !options.strict_path ) {
+        var NODE_PATH = process.env.NODE_PATH;
+        if ( NODE_PATH ) {
+            this.path = this.path.concat( NODE_PATH.split(':').filter(Boolean) );
+        }
     }
-
+    
     this.cwd = options.cwd ? node_path.resolve(options.cwd) : process.cwd();
 
     this._config = [];

@@ -58,6 +58,12 @@ type `path`, default to the `process.cwd`.
 
 It will be added to every target of each task configuration and will affect all configurations related to `files`, `src`, and `dest`.
 
+##### options.strict_path
+
+type `Boolean`, default to `false`
+
+By default, hum will concat the `NODE_PATH` to the end of the path list.
+
 ### .npmTasks(moduleName)
 
 Similar to `grunt.loadNpmTasks(moduleName)`
