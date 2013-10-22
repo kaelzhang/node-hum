@@ -81,8 +81,13 @@ Hum.prototype._apply_configs = function() {
 // - standardize files configurations and apply `this.cwd`
 Hum.prototype._process_config = function(config) {
     var self = this;
+    var tasks = this._tasks;
 
-    util.each(config, function (task_config) {
+    util.each(config, function (task_config, task_name) {
+        if ( ! ~ tasks.indexOf(task_name) ) {
+            return;
+        }
+
         util.each(task_config, function (target_config) {
             // add `this.cwd` to grunt `this.options()`
             var options = target_config.options || (

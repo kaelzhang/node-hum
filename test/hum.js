@@ -18,6 +18,16 @@ describe("hum", function(){
             
         })
         .init({
+            // with is not a task config
+            pkg: {
+                name: {
+                }, 
+
+                // #4
+                // with will throw an error:
+                // "TypeError: Cannot use 'in' operator to search for 'src' in abc"
+                description: "abc"
+            },
             blah: {
                 options: {
                     aa: 1,
