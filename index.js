@@ -107,14 +107,14 @@ Hum.prototype._process_config = function(config) {
         }
 
         util.each(task_config, function (target_config, target_name) {
-            // add `this.cwd` to grunt `this.options()`
-            var options = target_config.options || (
-                    target_config.options = {}
-                );
+            // // add `this.cwd` to grunt `this.options()`
+            // var options = target_config.options || (
+            //         target_config.options = {}
+            //     );
 
-            if ( !options.cwd ) {
-                options.cwd = self.cwd;
-            }
+            // if ( !options.cwd ) {
+            //     options.cwd = self.cwd;
+            // }
 
             task_config[target_name] = self._normalize_target_files(target_config);
         });
