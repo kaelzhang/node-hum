@@ -106,7 +106,7 @@ Hum.prototype._process_config = function(config) {
             return;
         }
 
-        util.each(task_config, function (target_config) {
+        util.each(task_config, function (target_config, target_name) {
             // add `this.cwd` to grunt `this.options()`
             var options = target_config.options || (
                     target_config.options = {}
@@ -116,7 +116,7 @@ Hum.prototype._process_config = function(config) {
                 options.cwd = self.cwd;
             }
 
-            self._normalize_target_files(target_config);
+            task_config[target_name] = self._normalize_target_files(target_config);
         });
     });
 
@@ -155,9 +155,14 @@ Hum.prototype._normalize_target_files = function (data) {
 
     var files = data.files;
 
+    if ( Array.isArray(data) ) {
+        data = {
+            files: data
+        };
+
     // {1} -> {4}
     // {src: [], dest: ''} -> {files: {src: [], dest: ''}}
-    if ( 'src' in data || 'dest' in data ) {
+    } else if ( 'src' in data || 'dest' in data ) {
         // we copy necessary properties of `data` to `data.files`,
         // including other configurations for grunt.file.expandMapping 
         data.files = util.mix({}, data);
@@ -186,6 +191,8 @@ Hum.prototype._normalize_target_files = function (data) {
         // if `data.files` already exists, 
         data.files = util.makeArray(data.files).map(this._normalize_file_config, this);   
     }
+
+    return data;
 };
 
 // resolve {src: [], dest: xxx } 
