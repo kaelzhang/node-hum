@@ -3,16 +3,23 @@
 module.exports = hum;
 hum.Hum = Hum;
 
-var grunt       = require('grunt');
 var util        = require('./lib/util');
+
+var grunt       = require('grunt');
 var deferrer    = require('deferrer');
+var async       = require('async');
 
-var node_path = require('path');
-
+var node_path   = require('path');
 
 function hum (options){
     return new Hum(options || {});
 };
+
+
+hum._queue = async.queue(function (instance, callback) {
+    instance._done(callback);
+});
+
 
 // @param {Object} options
 // - path: {Array.<path>} paths to search the grunt tasks from
@@ -37,6 +44,14 @@ function Hum (options) {
 
 
 var fake_gruntfile = node_path.join(__dirname, 'lib', 'fake-gruntfile.js');
+
+Hum.prototype.done = function(callback) {
+    hum._queue.push(this, function (err) {
+
+        // make sure, if no errors, `err` === `null`
+        callback(err || null);
+    });
+};
 
 Hum.prototype._run_grunt = function(err, done) {
     if ( err ) {
@@ -263,5 +278,5 @@ deferrer({
 .promise('task', '_collect_tasks')
 .promise('multiTask', '_register_multi_task')
 .promise('options', '_collect_options')
-.done('_run_grunt');
+.done('_done', '_run_grunt');
 

@@ -1,6 +1,6 @@
 {
   "name": "hum",
-  "version": "1.3.6",
+  "version": "2.1.1",
   "description": "Hum, hum could run grunt inside a specified cwd and search tasks from the given paths.",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/kaelzhang/node-hum/issues"
   },
-  "engines": { 
+  "engines": {
     "node": ">=0.8.0"
   },
   "devDependencies": {
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "grunt": "~0.4.1",
-    "deferrer": "~0.1.2"
+    "deferrer": "~1.1.0",
+    "async": "~0.2.9"
   }
 }
