@@ -1,8 +1,12 @@
 # hum [![NPM version](https://badge.fury.io/js/hum.png)](http://badge.fury.io/js/hum) [![Build Status](https://travis-ci.org/kaelzhang/node-hum.png?branch=master)](https://travis-ci.org/kaelzhang/node-hum) [![Dependency Status](https://gemnasium.com/kaelzhang/node-hum.png)](https://gemnasium.com/kaelzhang/node-hum)
 
-**hum** could run [grunt](http://gruntjs.com) inside a specified cwd and search tasks from the given paths.
+Play with grunt.
 
-**hum** provides a programmatical way to run [grunt](http://gruntjs.com) tasks.
+## Features
+
+- **hum** could run [grunt](http://gruntjs.com) inside a specified cwd and search tasks from the given paths.
+- **hum** instances will be executed in series to prevent grunt (_which is composed of global variables and singletons_) fucking up with himself.
+- **hum** provides a programmatical way to run [grunt](http://gruntjs.com) tasks.
 
 ## Installation
 
