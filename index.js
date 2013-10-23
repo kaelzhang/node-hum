@@ -194,7 +194,7 @@ Hum.prototype._normalize_file_config = function(data) {
     if ( typeof data === 'string' ) {
         data = {
             cwd: this.cwd,
-            src: [ this._resolve_path(data) ]
+            src: [ data ]
         };
         
     } else {

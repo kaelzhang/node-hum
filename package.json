@@ -1,6 +1,6 @@
 {
   "name": "hum",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Hum, hum could run grunt inside a specified cwd and search tasks from the given paths.",
   "main": "index.js",
   "scripts": {
