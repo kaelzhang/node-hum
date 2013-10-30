@@ -90,10 +90,6 @@ Hum.prototype._apply_configs = function() {
             return util.mix(prev, current);
         }, config);
 
-    if ( !('base' in config) ) {
-        config.base = process.cwd();
-    }
-
     grunt.initConfig(config);
 };
 
@@ -251,6 +247,10 @@ Hum.prototype._apply_options = function() {
     this._options.forEach(function (options) {
         util.mix(grunt_options, options)
     });
+
+    if ( !('base' in grunt_options) ) {
+        grunt_options.base = process.cwd();
+    }
 };
 
 
