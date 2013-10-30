@@ -90,6 +90,10 @@ Hum.prototype._apply_configs = function() {
             return util.mix(prev, current);
         }, config);
 
+    if ( !('base' in config) ) {
+        config.base = process.cwd();
+    }
+
     grunt.initConfig(config);
 };
 
